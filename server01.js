@@ -23,7 +23,7 @@ var yandex = require('./doppelcamyandex')
 
 app.use(express.static('uploads'));
 app.use('/downloaded', express.static('downloaded'));
-app.use(express.static('p5_webcam'));
+app.use(express.static('public'));
 
 app.use(multer({ dest: './uploads/',
     rename: function (fieldname, filename) {
@@ -203,11 +203,11 @@ function makeGif(gifImage1, gifImage2, outputFile) {
     }
 }
 
-var httpsServer = https.createServer(credentials, app);
-httpsServer.listen(443);
+// var httpsServer = https.createServer(credentials, app);
+// httpsServer.listen(443);
 
 var httpServer = http.createServer(app);
-httpServer.listen(80);
+httpServer.listen(3000);
 
 // app.listen(80,function(){
 //     console.log("Working on port 80");
