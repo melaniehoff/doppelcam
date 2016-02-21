@@ -103,15 +103,17 @@ app.post('/tweet',function(req,res){
 });
 
 app.post('/api/photo',function(req,res){
+ 
     upload(req,res,function(err) {
+         
         if(err) {
             console.log(err);
             return res.end("Error uploading file.");
         }
         var output = ''
-
-        var uploadedUrl2 = 'http://107.170.164.22/'+res.req.files.userPhoto.name;
+             var uploadedUrl2 = 'http://107.170.164.22/'+res.req.files.userPhoto.name;
         var uploadedUrl1 = 'http://doppel.camera/'+res.req.files.userPhoto.name;
+        
         console.log(uploadedUrl1);
         console.log(uploadedUrl2);
         //make the request to yandex

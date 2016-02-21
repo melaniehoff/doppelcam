@@ -1,16 +1,14 @@
 $(document).ready(function(){
 
-  var width = 320;    // We will scale the photo width to this
+  var width = 500;    // We will scale the photo width to this
   var height = 0;     // This will be computed based on the input stream
-
   var streaming = false;
-
-
   var video = document.getElementById('video');
   var canvas = document.getElementById('canvas');
-  var photo = document.getElementById('photo');
   var startbutton = document.getElementById('startbutton');
 
+  $('.photo.container').css('display', 'none');
+  
   function startup() {
     clearphoto();
   }
@@ -41,10 +39,7 @@ $(document).ready(function(){
   video.addEventListener('canplay', function(ev){
       if (!streaming) {
         height = video.videoHeight / (video.videoWidth/width);
-      
-        // Firefox currently has a bug where the height can't be read from
-        // the video, so we will make assumptions if this happens.
-      
+    
         if (isNaN(height)) {
           height = width / (4/3);
         }
@@ -76,11 +71,44 @@ $(document).ready(function(){
       canvas.width = width;
       canvas.height = height;
       context.drawImage(video, 0, 0, width, height);
-    
-      var data = canvas.toDataURL('image/png');
-      photo.setAttribute('src', data);
+      $('.video.container').css("display","none");
+      $('#canvas').css("opacity","1");
+      $('.photo.container').css('display', 'block');  
     } else {
       clearphoto();
     }
+    sendPhoto()
+  }
+  function sendPhoto(){
+
+
+    imageData = canvas.toDataURL();
+
+    var blobBin = atob(imageData.split(',')[1]);
+    var array = [];
+    for (var i = 0; i < blobBin.length; i++) {
+      array.push(blobBin.charCodeAt(i));
+    }
+    var imageFile = new Blob([new Uint8Array(array)], {
+      type: 'image/png'
+    });
+    
+    var formData = new FormData();
+    formData.append('userPhoto', imageFile);
+
+    $.ajax({
+      //url: "http://107.170.164.22/api/photo",
+      url: "http://doppel.camera/api/photo",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      enctype: 'multipart/form-data',
+      success: function(data) {
+        
+      },
+      error: console.log('hello')
+    });
+
   }
 })
