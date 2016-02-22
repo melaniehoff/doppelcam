@@ -10,8 +10,11 @@ body {
   height:100%;
   margin:auto;
   -webkit-transform: rotate(90deg);
+  text-align: center;
 }
-
+.button{
+  margin-top:100px;
+}
 #canvas{
   opacity:0;
   position:relative;
