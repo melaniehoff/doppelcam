@@ -110,7 +110,7 @@ app.post('/api/photo',function(req,res){
             console.log(err);
             return res.end("Error uploading file.");
         }
-        
+
         var output = ''
         var uploadedUrl2 = 'https://107.170.164.22/'+res.req.files.userPhoto.name;
         var uploadedUrl1 = 'https://doppel.camera/'+res.req.files.userPhoto.name;
@@ -124,7 +124,7 @@ app.post('/api/photo',function(req,res){
         yandex.get_similar(uploadedUrl1, function(out) {
             var downloadedFile = 'downloaded/' + res.req.files.userPhoto.name;
 	        console.log('downloaded file', out[0], downloadedFile);
-
+            console.log(out);
             request.get(out[0]).on('response', function(imgres) {
 
             //var request = http.get(out[0], function(imgres){

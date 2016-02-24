@@ -1,7 +1,7 @@
  var cd;
  var og;
 $(document).ready(function(){
- 
+
   var width = 500;    // We will scale the photo width to this
   var height = 0;     // This will be computed based on the input stream
   var streaming = false;
@@ -110,9 +110,13 @@ $(document).ready(function(){
     if (indexToTry < images.length - 1) {
       gotNewImage(images, indexToTry + 1);
     } else {
+      vid = $('video');
       $('.photo.container').css("display",'none');
       $('.compare.container').css("display",'block');
       $('.compare img').attr("src",images[i]);
+      $('.compare img').css("height",vid.width());
+      $('.compare img').css("width",vid.height());
+
     }
   
   }
@@ -145,7 +149,7 @@ $(document).ready(function(){
       success: function(data) {
         gotNewImage(data, 0)
       },
-        error: console.log('fuck');
+        error: gotNewImage(["http://artdelicorp.com/img2/pattern.png"], 0);
     });
 
   }
