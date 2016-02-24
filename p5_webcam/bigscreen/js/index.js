@@ -1,5 +1,6 @@
+ var cd;
 $(document).ready(function(){
-
+ 
   var width = 500;    // We will scale the photo width to this
   var height = 0;     // This will be computed based on the input stream
   var streaming = false;
@@ -9,21 +10,16 @@ $(document).ready(function(){
 
   $('.photo.container').css('display', 'none');
   
-  function startup() {
-    clearphoto();
-  }
 
   navigator.getMedia = ( navigator.getUserMedia ||
                            navigator.webkitGetUserMedia ||
                            navigator.mozGetUserMedia ||
                            navigator.msGetUserMedia);
 
-  navigator.getMedia(
-      {
+  navigator.getMedia({
         video: true,
         audio: false
-      },
-      function(stream) {
+      },function(stream) {
         if (navigator.mozGetUserMedia) {
           video.mozSrcObject = stream;
         } else {
@@ -36,6 +32,7 @@ $(document).ready(function(){
         console.log("An error occured! " + err);
       }
     );
+  
   video.addEventListener('canplay', function(ev){
       if (!streaming) {
         height = video.videoHeight / (video.videoWidth/width);
@@ -43,7 +40,6 @@ $(document).ready(function(){
         if (isNaN(height)) {
           height = width / (4/3);
         }
-      
         video.setAttribute('width', width);
         video.setAttribute('height', height);
         canvas.setAttribute('width', width);
@@ -53,9 +49,12 @@ $(document).ready(function(){
     }, false);
 
   startbutton.addEventListener('click', function(ev){
-      takepicture();
+      initpicture();
       ev.preventDefault();
     }, false);
+
+  
+  function startup() {clearphoto();}
 
   function clearphoto() {
     var context = canvas.getContext('2d');
@@ -65,6 +64,30 @@ $(document).ready(function(){
     var data = canvas.toDataURL('image/png');
     photo.setAttribute('src', data);
   }
+  
+  function initpicture(){
+    $('#startbutton').css('display','none');
+    $('.loading').css('display','block')
+    var i=3;
+    var myTimer = window.setInterval(function(){
+      countdown(i);
+      i--;
+    }, 750);
+   if (i == 0){
+    window.clearInterval(myTimer);
+   }
+  }
+  function countdown(i){
+   
+    if (i == 0){
+      takepicture();
+    }else if( i < 0 ){
+       $('.loading').css('background-image', "url(/assets/loadingText04.gif")
+    }else{
+      $('.loading').css('background-image', "url(/assets/countdown"+i+".png")
+    }
+  }
+
   function takepicture() {
     var context = canvas.getContext('2d');
     if (width && height) {
@@ -79,8 +102,10 @@ $(document).ready(function(){
     }
     sendPhoto()
   }
-  function sendPhoto(){
+  
 
+
+  function sendPhoto(){
 
     imageData = canvas.toDataURL();
 

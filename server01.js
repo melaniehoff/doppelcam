@@ -23,7 +23,7 @@ var yandex = require('./doppelcamyandex')
 
 app.use(express.static('uploads'));
 app.use('/downloaded', express.static('downloaded'));
-app.use(express.static('public'));
+app.use(express.static('p5_webcam'));
 
 app.use(multer({ dest: './uploads/',
     rename: function (fieldname, filename) {

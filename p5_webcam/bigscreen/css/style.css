@@ -8,12 +8,12 @@ body {
   position:relative;
   width:100%;
   height:100%;
-  margin:auto;
+  margin:200px auto;
   -webkit-transform: rotate(90deg);
   text-align: center;
 }
 .button{
-  margin-top:100px;
+  margin-top:200px;
 }
 #canvas{
   opacity:0;
@@ -22,6 +22,16 @@ body {
   height:100%;
 }
 
+.loading {
+  display: none;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  height: 400px;
+  background-repeat: no-repeat;
+  z-index: 1000;
+  -webkit-transform: rotate(-90deg);
+}
 
 video{
   position:relative;
