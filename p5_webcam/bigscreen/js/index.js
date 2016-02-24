@@ -1,4 +1,5 @@
  var cd;
+ var og;
 $(document).ready(function(){
  
   var width = 500;    // We will scale the photo width to this
@@ -103,7 +104,18 @@ $(document).ready(function(){
     sendPhoto()
   }
   
-
+  function gotNewImage(images, indexToTry) {
+  //console.log(indexToTry);
+    var i = indexToTry;
+    if (indexToTry < images.length - 1) {
+      gotNewImage(images, indexToTry + 1);
+    } else {
+      $('.photo.container').css("display",'none');
+      $('.compare.container').css("display",'block');
+      $('.compare img').attr("src",images[i]);
+    }
+  
+  }
 
   function sendPhoto(){
 
@@ -119,20 +131,21 @@ $(document).ready(function(){
     });
     
     var formData = new FormData();
+    // formData.append('userPhoto', imageFile);
     formData.append('userPhoto', imageFile);
 
+
     $.ajax({
-      //url: "http://107.170.164.22/api/photo",
-      url: "http://doppel.camera/api/photo",
+      url: "https://doppel.camera/api/photo",
       type: "POST",
       data: formData,
       processData: false,
       contentType: false,
       enctype: 'multipart/form-data',
       success: function(data) {
-        
+        gotNewImage(data, 0)
       },
-      error: console.log('hello')
+        error: console.log('fuck');
     });
 
   }

@@ -52,12 +52,12 @@ var client = new Twitter({
   access_token_secret: '5HcMlg8fXjV7MTZJMXDaKVV7nr359XQAlxwgs3sTuuCNO'
 });
  
-var params = {screen_name: 'nodejs'};
-client.get('statuses/user_timeline', params, function(error, tweets, response){
-  if (!error) {
-    console.log(tweets);
-  }
-});
+// var params = {screen_name: 'nodejs'};
+// client.get('statuses/user_timeline', params, function(error, tweets, response){
+//   if (!error) {
+//     // console.log(tweets);
+//   }
+// });
 
 app.post('/tweet',function(req,res){
     upload(req,res,function(err) {
@@ -65,6 +65,7 @@ app.post('/tweet',function(req,res){
             console.log(err);
             return res.end("Error uploading file.");
         }
+
         var output = ''
 
         var uploadedUrl2 = 'http://107.170.164.22/'+res.req.files.userPhoto.name;
@@ -103,27 +104,26 @@ app.post('/tweet',function(req,res){
 });
 
 app.post('/api/photo',function(req,res){
- 
     upload(req,res,function(err) {
          
         if(err) {
             console.log(err);
             return res.end("Error uploading file.");
         }
+        
         var output = ''
-             var uploadedUrl2 = 'http://107.170.164.22/'+res.req.files.userPhoto.name;
-        var uploadedUrl1 = 'http://doppel.camera/'+res.req.files.userPhoto.name;
+        var uploadedUrl2 = 'https://107.170.164.22/'+res.req.files.userPhoto.name;
+        var uploadedUrl1 = 'https://doppel.camera/'+res.req.files.userPhoto.name;
         
         console.log(uploadedUrl1);
         console.log(uploadedUrl2);
+
         //make the request to yandex
         //and then return the url of the yandex photo
 
         yandex.get_similar(uploadedUrl1, function(out) {
             var downloadedFile = 'downloaded/' + res.req.files.userPhoto.name;
 	        console.log('downloaded file', out[0], downloadedFile);
-
-
 
             request.get(out[0]).on('response', function(imgres) {
 
@@ -137,6 +137,7 @@ app.post('/api/photo',function(req,res){
 
                 imgres.on('end', function(){
                     fs.writeFile(downloadedFile, imagedata, 'binary', function(err){
+                        
                         if (err) throw err
                         console.log('File saved.')
                         res.json(['https://doppel.camera/' + downloadedFile]);
