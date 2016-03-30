@@ -110,6 +110,10 @@ $(document).ready(function(){
     if (indexToTry < images.length - 1) {
       gotNewImage(images, indexToTry + 1);
     } else {
+        
+
+      debugger;
+      cloneCanvas($('canvas'));
       vid = $('video');
       $('.photo.container').css("display",'none');
       $('.compare.container').css("display",'block');
@@ -121,6 +125,19 @@ $(document).ready(function(){
   
   }
 
+  function cloneCanvas(oldCanvas) {
+
+    //create a new canvas
+    var newCanvas = document.createElement('canvas');
+    var context = newCanvas.getContext('2d');
+
+    newCanvas.width = oldCanvas.width;
+    newCanvas.height = oldCanvas.height;
+
+    context.drawImage(oldCanvas, 0, 0);
+
+    return newCanvas;
+  }
   function sendPhoto(){
 
     imageData = canvas.toDataURL();

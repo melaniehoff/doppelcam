@@ -17,10 +17,12 @@ function finished(imgs) {
 function get_similar(source_url, cb) {
   request.get(base_url+encodeURIComponent(source_url), function(error, response, body){
     //request.get(base_url+source_url, function(error, response, body){
+    console.log('yandex1')
     if (error) {
       console.error(error);
       cb([]);
       return false;
+       
     }
 
     console.log(base_url+source_url);
@@ -32,6 +34,7 @@ function get_similar(source_url, cb) {
     var links = $('.similar__link').each(function(i, el) {
       var href = $(el).attr('href');
       var matches = re.exec(href);
+      console.log(matches);
       if (matches.length == 2) {
         var img_url = decodeURIComponent(matches[1]);
         out.push(img_url);
