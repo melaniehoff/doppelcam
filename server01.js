@@ -265,36 +265,6 @@ function composeImage(blobname, callback) {
     });
 }
 
-function makeGif(gifImage1, gifImage2, outputFile) {
-
-    console.log("make a gif out of these two images:");
-    console.log(gifImage1);
-    console.log(gifImage2);
-    console.log("and store it in:" + outputFile)
-
-    try {
-
-        im.convert([gifImage1, '-resize', '640x480', 'temp/gifImage1'],
-        function(err, stdout){
-          if (err) throw err; console.log('stdout:', stdout);
-        });
-
-        im.convert([gifImage2, '-resize', '640x480', 'temp/gifImage2'],
-        function(err, stdout){
-          if (err) throw err; console.log('stdout:', stdout);
-        });
-
-        im.convert(['-delay','200', '-size', '640x480', 'temp/gifImage1', 'temp/gifImage2','-loop','0', outputFile],
-        function(err, stdout){
-          if (err) throw err;
-          console.log('stdout:', stdout);
-        });
-
-    } catch (e) {
-        console.log(e.code);
-        console.log(e.msg);
-    }
-}
 
 var httpsServer = https.createServer(credentials, app);
 httpsServer.listen(443);
