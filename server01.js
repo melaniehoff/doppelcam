@@ -212,14 +212,20 @@ app.post('/api/photo',function(req,res){
         yandex.get_similar(uploadedUrl1, function(out) {
           var downloadedFile = 'downloaded/' + res.req.files.userPhoto.name;
           console.log('downloaded file', out[0], downloadedFile);
-          res.json(saveDoppel(out[0],downloadedFile));
+          saveDoppel(out[0],downloadedFile,function(doppel){
+            res.json(doppel);
+          });
+         
+          
         });
     });
 });
 
-function saveDoppel(dp,df){
+function saveDoppel(dp,df,cb){
   request.get(dp).on('response', function(imgres) {
+    
     var imagedata = ''
+    
     imgres.setEncoding('binary')
 
     imgres.on('data', function(chunk){
@@ -233,10 +239,15 @@ function saveDoppel(dp,df){
              throw err
           }
             console.log('File saved.')
-            return ['https://doppel.camera/' + df];
+            str = 'https://doppel.camera/' + df;
+            ar = [str];
+            console.log("ar: "+ar);
+            cb(ar);
         })
       })
+  
   })
+  
 }
 
 function composeImage(blobname, callback) {
