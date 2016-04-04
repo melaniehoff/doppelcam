@@ -9,11 +9,11 @@ var gm = require('gm');
 var imageMagick = gm.subClass({ imageMagick: true });
 
 
-var privateKey  = fs.readFileSync('/etc/letsencrypt/live/doppel.camera/privkey.pem', 'utf8');
-var certificate = fs.readFileSync('/etc/letsencrypt/live/doppel.camera/fullchain.pem', 'utf8');
+// var privateKey  = fs.readFileSync('/etc/letsencrypt/live/doppel.camera/privkey.pem', 'utf8');
+// var certificate = fs.readFileSync('/etc/letsencrypt/live/doppel.camera/fullchain.pem', 'utf8');
 
 
-var credentials = {key: privateKey, cert: certificate};
+// var credentials = {key: privateKey, cert: certificate};
 
 var express         =       require("express");
 var multer          =       require('multer');
@@ -177,18 +177,21 @@ var tweet = function(data){
 app.post('/app/api/photo',function(req,res){
 
   timestamp = new Date();
+  
   console.log(1);
   var raw = new Buffer(req.body.image.file_data.toString(), 'base64')
+  
   fs.writeFile('./uploads/'+timestamp.getTime()+'.png', raw, function (err) {
     if (err){
       console.log('photo upload error');
     }else{
-
+      df = './uploads/'+timestamp.getTime()+'.png'
       url = 'http://www.artdelicorp.com/wp-content/uploads/2016/03/9.jpg';
-      console.log(url);
+      
       yandex.get_similar(url, function(out){
-        eval(require('locus'))
-        console.log(out);
+        saveDoppel(out[0],df,function(doppel){
+          res.json({"url":url});
+        });
       })
       
     }
@@ -206,14 +209,14 @@ app.post('/api/photo',function(req,res){
 
         var uploadedUrl2 = 'http://107.170.164.22/'+res.req.files.userPhoto.name;
         var uploadedUrl1 = 'http://doppel.camera/'+res.req.files.userPhoto.name;
-        console.log(uploadedUrl1);
-        console.log(uploadedUrl2);
+
 
         yandex.get_similar(uploadedUrl1, function(out) {
           var downloadedFile = 'downloaded/' + res.req.files.userPhoto.name;
+          console.log(json.stringify(out));
           console.log('downloaded file', out[0], downloadedFile);
           saveDoppel(out[0],downloadedFile,function(doppel){
-            res.json(doppel);
+            res.json("doppel");
           });
          
           
@@ -277,12 +280,12 @@ function composeImage(blobname, callback) {
 }
 
 
-var httpsServer = https.createServer(credentials, app);
-httpsServer.listen(443);
+// var httpsServer = https.createServer(credentials, app);
+// httpsServer.listen(443);
 
 // var httpServer = http.createServer(app);
 // httpServer.listen(3000);
 
-app.listen(80,function(){
+app.listen(3000,function(){
     console.log("Working on port 80");
 });
